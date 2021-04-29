@@ -109,7 +109,7 @@ namespace kinectfusion {
                 const int x = threadIdx.x + blockIdx.x * blockDim.x;
                 const int y = threadIdx.y + blockIdx.y * blockDim.y;
 
-                if (__all(x >= volume_size.x) || __all(y >= volume_size.y))
+                if (__all_sync(0xFFFFFFFF, x >= volume_size.x) || __all_sync(0xFFFFFFFF, y >= volume_size.y))
                     return;
 
                 const auto flattened_tid =
@@ -127,7 +127,7 @@ namespace kinectfusion {
                         n_vertices = (cube_index == 0 || cube_index == 255) ? 0 : number_vertices_table.ptr(0)[cube_index];
                     }
 
-                    const int total = __popc(__ballot(n_vertices > 0));
+                    const int total = __popc(__ballot_sync(0xFFFFFFFF, n_vertices > 0));
 
                     if (total == 0)
                         continue;
@@ -139,7 +139,7 @@ namespace kinectfusion {
 
                     const int old_global_voxels_count = warps_buffer[warp_id];
 
-                    const int offset = binaryExclScan(__ballot(n_vertices > 0));
+                    const int offset = binaryExclScan(__ballot_sync(0xFFFFFFFF, n_vertices > 0));
 
                     const int max_size = occupied_voxel_indices.cols;
                     if (old_global_voxels_count + offset < max_size && n_vertices > 0) {

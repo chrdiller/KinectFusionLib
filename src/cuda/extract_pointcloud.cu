@@ -71,7 +71,7 @@ namespace kinectfusion {
                         if (is_surface_y) {
                             position.y() -= (tsdf / (tsdf_y - tsdf)) * voxel_scale;
 
-                            vertices.ptr(0)[index] = float3{position(0), position(1), position(2)};;
+                            vertices.ptr(0)[index] = float3{position(0), position(1), position(2)};
                             normals.ptr(0)[index] = float3{normal(0), normal(1), normal(2)};
                             color.ptr(0)[index] = color_volume.ptr(z * volume_size.y + y)[x];
                             index++;
@@ -79,7 +79,7 @@ namespace kinectfusion {
                         if (is_surface_z) {
                             position.z() -= (tsdf / (tsdf_z - tsdf)) * voxel_scale;
 
-                            vertices.ptr(0)[index] = float3{position(0), position(1), position(2)};;
+                            vertices.ptr(0)[index] = float3{position(0), position(1), position(2)};
                             normals.ptr(0)[index] = float3{normal(0), normal(1), normal(2)};
                             color.ptr(0)[index] = color_volume.ptr(z * volume_size.y + y)[x];
                             index++;

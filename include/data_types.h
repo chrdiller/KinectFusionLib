@@ -288,7 +288,7 @@ namespace kinectfusion {
             GpuMat color_volume; //uchar4
             int3 volume_size;
             float voxel_scale;
-
+            VolumeData(){}
             VolumeData(const int3 _volume_size, const float _voxel_scale) :
                     tsdf_volume(cv::cuda::createContinuous(_volume_size.y * _volume_size.z, _volume_size.x, CV_16SC2)),
                     color_volume(cv::cuda::createContinuous(_volume_size.y * _volume_size.z, _volume_size.x, CV_8UC3)),

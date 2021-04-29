@@ -1,0 +1,30 @@
+package(default_visibility = ["//visibility:public"])
+
+load(
+    "//tools:twa.bzl",
+    "twa_cc_binary",
+    "twa_cc_library",
+    "twa_cc_test",
+    "twa_cuda_library",
+)
+
+twa_cuda_library(
+    name = "KinectFusionLib",
+    srcs = glob([
+        "src/*.cpp",
+        "src/cuda/*.cu",
+    ]),
+    hdrs = glob([
+        "include/*.h",
+        "src/cuda/include/*.h",
+    ]),
+    includes = [
+        "include",
+        "src/cuda",
+    ],
+    deps = [
+        "@eigen3//:core",
+        "@local_config_cuda//cuda",
+        "@opencv3",
+    ],
+)

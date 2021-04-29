@@ -5,6 +5,9 @@
 #define KINECTFUSION_H
 
 #include "data_types.h"
+#include "cuda_runtime_api.h"
+#include "cuda_runtime.h"
+#include <Eigen/StdVector>
 
 namespace kinectfusion {
     /*
@@ -24,6 +27,7 @@ namespace kinectfusion {
      */
     class Pipeline {
     public:
+      EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
         /**
          * Constructs the pipeline, sets up the interal volume and camera.
          * @param _camera_parameters The \ref{CameraParameters} that you want this pipeline to use
@@ -46,7 +50,7 @@ namespace kinectfusion {
          * Retrieve all camera poses computed so far
          * @return A vector for 4x4 camera poses, consisting of rotation and translation
          */
-        std::vector<Eigen::Matrix4f> get_poses() const;
+        std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f>> get_poses() const;
 
         /**
          * Use this to get a visualization of the last raycasting
@@ -65,21 +69,20 @@ namespace kinectfusion {
          * @return A SurfaceMesh representation (see description of SurfaceMesh for more information on the data layout)
          */
         SurfaceMesh extract_mesh() const;
+        // The global volume (containing tsdf and color)
+        internal::VolumeData volume;
 
     private:
         // Internal parameters, not to be changed after instantiation
         const CameraParameters camera_parameters;
         const GlobalConfiguration configuration;
 
-        // The global volume (containing tsdf and color)
-        internal::VolumeData volume;
-
         // The model data for the current frame
         internal::ModelData model_data;
 
         // Poses: Current and all previous
         Eigen::Matrix4f current_pose;
-        std::vector<Eigen::Matrix4f> poses;
+        std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f>> poses;
 
         // Frame ID and raycast result for output purposes
         size_t frame_id;

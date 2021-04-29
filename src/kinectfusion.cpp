@@ -76,8 +76,7 @@ namespace kinectfusion {
         return cv::Mat(1, 1, CV_8UC1);
     }
 
-    std::vector<Eigen::Matrix4f> Pipeline::get_poses() const
-    {
+     std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f>> Pipeline::get_poses() const {
         for (auto pose : poses)
             pose.block(0, 0, 3, 3) = pose.block(0, 0, 3, 3).inverse();
         return poses;
@@ -121,8 +120,8 @@ namespace kinectfusion {
             uchar3 color = point_cloud.color.ptr<uchar3>(0)[i];
             file_out << vertex.x << " " << vertex.y << " " << vertex.z << " " << normal.x << " " << normal.y << " "
                      << normal.z << " ";
-            file_out << static_cast<int>(color.x) << " " << static_cast<int>(color.y) << " "
-                     << static_cast<int>(color.z) << std::endl;
+            file_out << static_cast<int>(color.z) << " " << static_cast<int>(color.y) << " "
+                     << static_cast<int>(color.x) << std::endl;
         }
     }
 
